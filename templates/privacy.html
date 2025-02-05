@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuoteGenius - Privacy Policy</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <nav class="bg-white shadow-lg">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center space-x-2">
+                    <i class="fas fa-quote-right text-blue-600 text-2xl"></i>
+                    <span class="font-bold text-xl text-gray-800">QuoteGenius</span>
+                </div>
+                <a href="{{ url_for('index') }}" class="text-gray-600 hover:text-blue-600">
+                    <i class="fas fa-home mr-1"></i> Home
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mx-auto px-4 py-8">
+        <div class="max-w-3xl mx-auto">
+            <h1 class="text-3xl font-bold text-gray-800 mb-8">Privacy Policy</h1>
+            
+            <div class="bg-white rounded-lg shadow-lg p-6 space-y-6">
+                <section>
+                    <h2 class="text-xl font-semibold mb-4">Data Collection and Usage</h2>
+                    <ul class="list-disc pl-5 space-y-2 text-gray-600">
+                        <li>We do not store or retain any PDF content uploaded to our service</li>
+                        <li>All document processing is done in-memory and immediately discarded</li>
+                        <li>Generated quotes are temporarily cached for 1 hour maximum</li>
+                        <li>No personal information is collected or stored</li>
+                        <li>We do not use cookies or tracking mechanisms</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2 class="text-xl font-semibold mb-4">Security Measures</h2>
+                    <ul class="list-disc pl-5 space-y-2 text-gray-600">
+                        <li>All processing is done securely in-memory</li>
+                        <li>Files are not stored on our servers</li>
+                        <li>20MB maximum file size limit</li>
+                        <li>Automatic data cleanup every hour</li>
+                        <li>SSL encryption for all data transfers</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2 class="text-xl font-semibold mb-4">Third-Party Services</h2>
+                    <ul class="list-disc pl-5 space-y-2 text-gray-600">
+                        <li>We use OpenAI's API for quote generation</li>
+                        <li>No document content is shared with third parties</li>
+                        <li>Processing is done through secure API calls</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2 class="text-xl font-semibold mb-4">Your Rights</h2>
+                    <ul class="list-disc pl-5 space-y-2 text-gray-600">
+                        <li>Your data is automatically deleted after processing</li>
+                        <li>No user accounts or stored information to manage</li>
+                        <li>Complete privacy and anonymity</li>
+                    </ul>
+                </section>
+            </div>
+        </div>
+    </main>
+</body>
+</html> 

@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuoteGenius - PDF Quote Generator</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <nav class="bg-white shadow-lg">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center space-x-2">
+                    <i class="fas fa-quote-right text-blue-600 text-2xl"></i>
+                    <span class="font-bold text-xl text-gray-800">QuoteGenius</span>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <a href="#how-it-works" class="text-gray-600 hover:text-blue-600">How it works</a>
+                    <a href="#about" class="text-gray-600 hover:text-blue-600">About</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mx-auto px-4 py-8">
+        <div class="max-w-2xl mx-auto">
+            <div class="text-center mb-12">
+                <h1 class="text-4xl font-bold text-gray-800 mb-4">Extract Meaningful Quotes from Your PDF</h1>
+                <p class="text-gray-600">Powered by Advanced AI to find the most impactful quotes from your documents</p>
+            </div>
+
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+                            <span class="block sm:inline">{{ message }}</span>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-8 rounded-lg">
+                <div class="flex items-start">
+                    <div class="flex-shrink-0">
+                        <i class="fas fa-shield-alt text-blue-600 text-xl"></i>
+                    </div>
+                    <div class="ml-3">
+                        <h3 class="text-sm font-medium text-blue-800">
+                            Your Privacy & Data Security
+                        </h3>
+                        <div class="mt-2 text-sm text-blue-700">
+                            <ul class="list-disc pl-5 space-y-1">
+                                <li><strong>No Storage:</strong> We do not store or save your PDF files</li>
+                                <li><strong>Secure Processing:</strong> All processing is done in-memory and immediately discarded</li>
+                                <li><strong>Private:</strong> No personal information is collected</li>
+                                <li><strong>Temporary:</strong> Generated quotes are cached for only 1 hour</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-lg p-8">
+                <form method="POST" enctype="multipart/form-data" class="space-y-6">
+                    <div class="upload-container">
+                        <label for="file" class="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-blue-500 transition-colors">
+                            <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                                <i class="fas fa-cloud-upload-alt text-4xl text-gray-400 mb-2"></i>
+                                <p class="mb-2 text-sm text-gray-500">
+                                    <span class="font-semibold">Click to upload</span> or drag and drop
+                                </p>
+                                <p class="text-xs text-gray-500">PDF (MAX. 100MB)</p>
+                            </div>
+                            <input id="file" name="file" type="file" class="hidden" accept=".pdf" required>
+                        </label>
+                        <div id="file-name" class="mt-2 text-sm text-gray-500"></div>
+                    </div>
+
+                    <div class="quote-options">
+                        <label for="num_quotes" class="block text-sm font-medium text-gray-700">Number of quotes to generate</label>
+                        <div class="mt-1 flex items-center space-x-2">
+                            <input type="range" id="num_quotes" name="num_quotes" min="1" max="20" value="5" 
+                                   class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
+                            <span id="quote-value" class="text-sm text-gray-600 w-8">5</span>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                        <div class="flex items-start space-x-3">
+                            <div class="flex items-center h-5 pt-1">
+                                <input id="accept_terms" name="accept_terms" type="checkbox" required
+                                       class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300">
+                            </div>
+                            <div class="text-sm">
+                                <label for="accept_terms" class="font-medium text-gray-700">
+                                    I understand and agree that:
+                                </label>
+                                <ul class="mt-1 text-gray-600 list-disc pl-5 space-y-1">
+                                    <li>My PDF will be processed securely and not stored</li>
+                                    <li>Generated quotes are temporarily cached (1 hour max)</li>
+                                    <li>I accept the <a href="{{ url_for('terms') }}" class="text-blue-600 hover:underline" target="_blank">Terms of Service</a>
+                                        and <a href="{{ url_for('privacy') }}" class="text-blue-600 hover:underline" target="_blank">Privacy Policy</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center space-x-2">
+                        <i class="fas fa-magic"></i>
+                        <span>Generate Quotes</span>
+                    </button>
+                </form>
+            </div>
+
+            <div id="how-it-works" class="mt-16">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">How It Works</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="text-center">
+                        <div class="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-file-upload text-blue-600 text-2xl"></i>
+                        </div>
+                        <h3 class="font-semibold mb-2">1. Upload PDF</h3>
+                        <p class="text-gray-600">Upload any PDF document containing text you want to analyze</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-robot text-blue-600 text-2xl"></i>
+                        </div>
+                        <h3 class="font-semibold mb-2">2. AI Processing</h3>
+                        <p class="text-gray-600">Our AI analyzes the text to find meaningful quotes</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-quote-right text-blue-600 text-2xl"></i>
+                        </div>
+                        <h3 class="font-semibold mb-2">3. Get Quotes</h3>
+                        <p class="text-gray-600">Receive AI-generated quotes with context and explanations</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-12 bg-white rounded-lg shadow-lg p-8">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6">How We Process Your PDF</h2>
+                
+                <div class="space-y-6">
+                    <div class="flex items-start space-x-4">
+                        <div class="flex-shrink-0 w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                            <span class="text-blue-600 font-semibold">1</span>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-gray-800">Secure Upload</h3>
+                            <p class="text-gray-600">Your PDF is securely transmitted using SSL encryption</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start space-x-4">
+                        <div class="flex-shrink-0 w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                            <span class="text-blue-600 font-semibold">2</span>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-gray-800">In-Memory Processing</h3>
+                            <p class="text-gray-600">Content is processed entirely in memory, never written to disk</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start space-x-4">
+                        <div class="flex-shrink-0 w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                            <span class="text-blue-600 font-semibold">3</span>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-gray-800">Quote Generation</h3>
+                            <p class="text-gray-600">AI processes the content to extract meaningful quotes</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start space-x-4">
+                        <div class="flex-shrink-0 w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                            <span class="text-blue-600 font-semibold">4</span>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-gray-800">Immediate Cleanup</h3>
+                            <p class="text-gray-600">PDF content is immediately discarded after processing</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Update file name display
+        document.getElementById('file').addEventListener('change', function(e) {
+            const fileName = e.target.files[0]?.name || 'No file selected';
+            document.getElementById('file-name').textContent = fileName;
+        });
+
+        // Update range input display
+        document.getElementById('num_quotes').addEventListener('input', function(e) {
+            document.getElementById('quote-value').textContent = e.target.value;
+        });
+    </script>
+</body>
+</html> 
